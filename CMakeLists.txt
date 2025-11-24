@@ -585,8 +585,13 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
     DISABLE_PERF_MEASUREMENT
     OPJ_STATIC
     NO_LCMS
-    NO_WINDOWS
+    # NO_WINDOWS - 注释掉，否则会禁用 Windows DLL 导出/导入机制
 )
+
+# 在 Windows 上构建 DLL 时，需要定义 FREEIMAGE_EXPORTS
+if(BUILD_SHARED_LIBS AND WIN32)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE FREEIMAGE_EXPORTS)
+endif()
 
 # Set C++ standard
 if (DEFINED C_STANDARD)
